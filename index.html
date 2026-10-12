@@ -4,9 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1C5590">
+<meta name="color-scheme" content="light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="通所の記録">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAACqklEQVR42u3dwW3CQBRFURtRhmkoe2gDpZKYNiggDZE+yDKbKAoCe8bvn7tGSJ45fI2FJY/Tcb4PUkg7SyCgJaAloCWgBbQEtAS0BLQEtICWgJaAloCWgBbQEtAS0BLQEtACWgJaAloCWgJaQEtAS0BLQEs/7VMv7HY9//uzh9PFdZvQEtAS0BLQAloCWgJaAloCWkBLQEtAS0BLQAtoCWgJaAloCWgBLQEtAS093Tgd57tlkAktAS0BLQEtoCWgJaAloCWgBbQEtAS0BLT0R928NOiRl92oz3p4CZEJLUcOCWgJaAloAS0BLQEtAS0BLaAloCWgtULT+xvQysJcDTXQBSZzJdRAFzlmVEENdKEzcwXUQBe7AUxHDXQhzBVQA10MczpqoAtiTkYNdFHMqaiBLox5GIbh6+MTaMEMtLoqETPQRadzKmagYQZaMAMtmIEWzEDDXBgz0DADLZiBFsxAwyygy2OuPJ2BhhlowQy08yrMQC8LqSVqmIFeBFIL1DADvSikNVHDDPQqkNZADTPQq0JaEjXMQDeBtARqmIFuCumVAGEGugtIr4AIM9BdTcVnvgdmoLsE0PofRZiBbo7aM81Ax6CGGegY1DADHYMaZqBjUMMMdAxqmIEud6MIM9CbQQ0z0CDBDDRQArpj1H5MQMfgghnoGGQwAx2DGmagY1DDDHQMapiBjkENM9AxqGEGOgY1zEDHoIYZ6BjUMLdvbwkeQ/3bY6MgA132ZlGOHBLQArpph9PFbmy4XvbPhJYJbUqr130zoWVCm9Lqdb92FklJ+7SzWEran3E6zvfeF+92PRMEcg5osEGOBC1t9gwtAS2gLYGAloCWgJaAFtAS0BLQEtAS0AJaAloCWgJaAlpAS0BLQEtAS0ALaAloCWgJaAloAS1tpm8y1P915Hx/QwAAAABJRU5ErkJggg==">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAYAAAA9zQYyAAACqklEQVR42u3dwW3CQBRFURtRhmkoe2gDpZKYNiggDZE+yDKbKAoCe8bvn7tGSJ45fI2FJY/Tcb4PUkg7SyCgJaAloCWgBbQEtAS0BLQEtICWgJaAloCWgBbQEtAS0BLQEtACWgJaAloCWgJaQEtAS0BLQEs/7VMv7HY9//uzh9PFdZvQEtAS0BLQAloCWgJaAloCWkBLQEtAS0BLQAtoCWgJaAloCWgBLQEtAS093Tgd57tlkAktAS0BLQEtoCWgJaAloCWgBbQEtAS0BLT0R928NOiRl92oz3p4CZEJLUcOCWgJaAloAS0BLQEtAS0BLaAloCWgtULT+xvQysJcDTXQBSZzJdRAFzlmVEENdKEzcwXUQBe7AUxHDXQhzBVQA10MczpqoAtiTkYNdFHMqaiBLox5GIbh6+MTaMEMtLoqETPQRadzKmagYQZaMAMtmIEWzEDDXBgz0DADLZiBFsxAwyygy2OuPJ2BhhlowQy08yrMQC8LqSVqmIFeBFIL1DADvSikNVHDDPQqkNZADTPQq0JaEjXMQDeBtARqmIFuCumVAGEGugtIr4AIM9BdTcVnvgdmoLsE0PofRZiBbo7aM81Ax6CGGegY1DADHYMaZqBjUMMMdAxqmIEud6MIM9CbQQ0z0CDBDDRQArpj1H5MQMfgghnoGGQwAx2DGmagY1DDDHQMapiBjkENM9AxqGEGOgY1zEDHoIYZ6BjUMLdvbwkeQ/3bY6MgA132ZlGOHBLQArpph9PFbmy4XvbPhJYJbUqr130zoWVCm9Lqdb92FklJ+7SzWEran3E6zvfeF+92PRMEcg5osEGOBC1t9gwtAS2gLYGAloCWgJaAFtAS0BLQEtAS0AJaAloCWgJaAlpAS0BLQEtAS0ALaAloCWgJaAloAS1tpm8y1P915Hx/QwAAAABJRU5ErkJggg==">
 <title>通所と体調の記録</title>
 <style>
 :root{
+  color-scheme:light;
   --ink:#17202A; --soft:#4A5560; --line:#1F2933; --bg:#EDF1F4; --card:#fff;
   --green:#1B7049; --blue:#1C5590; --amber:#8A4A00; --red:#A8301F; --gray:#5A6672;
   --rule:#C9D2D9;
@@ -126,6 +134,21 @@ table.lst th{background:#E6ECF1;font-size:11.5px;white-space:nowrap;}
 table.lst td.d{white-space:nowrap;font-weight:bold;}
 table.lst td.g,table.lst td.c,table.lst td.t{white-space:nowrap;font-size:11.5px;}
 
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal .ch{text-align:center;font-size:11.5px;color:var(--soft);font-weight:bold;padding-bottom:2px;}
+.cd{aspect-ratio:1;min-height:40px;border:2px solid var(--rule);border-radius:8px;background:#fff;
+  color:var(--ink);font-size:15px;font-weight:bold;padding:0;}
+.cd.dim{background:#F2F5F7;color:#9AA5AE;}
+.cd[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#fff;}
+.wd{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cal .cw{text-align:center;font-size:12px;font-weight:bold;color:var(--soft);padding-bottom:2px;}
+.cd{min-height:42px;border:2px solid var(--rule);border-radius:8px;background:#fff;
+  color:var(--soft);font-size:15px;font-weight:bold;}
+.cd[aria-pressed="true"]{border:3px solid var(--blue);background:var(--blue);color:#fff;}
+.wdb{min-height:54px;border:3px solid var(--blue);border-radius:10px;background:#fff;
+  color:var(--blue);font-size:17px;font-weight:bold;}
+.wdb[aria-pressed="true"]{background:var(--blue);color:#fff;}
 /* せってい */
 .itemrow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
 .itemrow input[type=text]{flex:1;min-width:0;min-height:48px;border:2px solid var(--rule);
@@ -152,6 +175,13 @@ nav button.on{color:var(--blue);background:#E9F0F8;}
 </head>
 <body>
 
+<div id="warn" style="display:none;max-width:520px;margin:0 auto;padding:12px 14px 0;">
+  <div style="border:3px solid #A8301F;background:#FBEDEB;border-radius:12px;padding:12px;
+       color:#A8301F;font-size:14.5px;line-height:1.65;font-weight:bold;">
+    このスマホに保存できていません。入力した内容は、アプリを閉じると消えます。<br>
+    <span style="font-weight:normal">「せってい」→「記録を書き出す」で、文字をコピーして保管してください。</span>
+  </div>
+</div>
 <div class="app" id="app"></div>
 <div class="saved" id="saved">ほぞんしました</div>
 
@@ -168,17 +198,43 @@ var DEF_WHY = ['体調がわるい','眠れなかった','気分が落ちた','�
                '通院・用事','天気がわるい','理由がわからない'];
 var DEF_COPE = ['休んだ','横になった','早めに寝た','深呼吸した','散歩した',
                 'だれかに話した','事業所に連絡した','支援者に相談した','好きなことをした'];
-var DB = {v:1, why:[], cope:[], days:{}, reviews:{}};
+var HOLIDAYS = {"2026":["2026-01-01","2026-01-12","2026-02-11","2026-02-23","2026-03-20","2026-04-29","2026-05-03","2026-05-04","2026-05-05","2026-05-06","2026-07-20","2026-08-11","2026-09-21","2026-09-22","2026-09-23","2026-10-12","2026-11-03","2026-11-23"],"2027":["2027-01-01","2027-01-11","2027-02-11","2027-02-23","2027-03-21","2027-03-22","2027-04-29","2027-05-03","2027-05-04","2027-05-05","2027-07-19","2027-08-11","2027-09-20","2027-09-23","2027-10-11","2027-11-03","2027-11-23"],"2028":["2028-01-01","2028-01-10","2028-02-11","2028-02-23","2028-03-20","2028-04-29","2028-05-03","2028-05-04","2028-05-05","2028-07-17","2028-08-11","2028-09-18","2028-09-22","2028-10-09","2028-11-03","2028-11-23"],"2029":["2029-01-01","2029-01-08","2029-02-11","2029-02-12","2029-02-23","2029-03-20","2029-04-29","2029-04-30","2029-05-03","2029-05-04","2029-05-05","2029-07-16","2029-08-11","2029-09-17","2029-09-23","2029-09-24","2029-10-08","2029-11-03","2029-11-23"]};
+var DB = {v:1, why:[], cope:[], wdays:null, off:[], extra:[], days:{}, reviews:{}};
 
 function mk(list, p){ return list.map(function(t,i){ return {id:p+i, t:t}; }); }
 function load(){
   try{
     var raw = localStorage.getItem(KEY);
     if(raw){ var o = JSON.parse(raw);
-      DB = {v:1, why:o.why||[], cope:o.cope||[], days:o.days||{}, reviews:o.reviews||{}}; }
+      DB = {v:1, why:o.why||[], cope:o.cope||[], wdays:o.wdays||null,
+            off:o.off||[], extra:o.extra||[],
+            days:o.days||{}, reviews:o.reviews||{}}; }
   }catch(e){}
   if(!DB.why.length)  DB.why  = mk(DEF_WHY, 'w');
   if(!DB.cope.length) DB.cope = mk(DEF_COPE,'c');
+  if(!DB.wdays) DB.wdays = [1,2,3,4,5];
+}
+function isOff(d){ return DB.off.indexOf(key(d)) >= 0; }
+function isExtra(d){ return DB.extra.indexOf(key(d)) >= 0; }
+function byWday(d){ return DB.wdays.indexOf(d.getDay()) >= 0; }
+function isSched(d){ return !isOff(d) && (byWday(d) || isExtra(d)); }
+function kd(ks){ return new Date(+ks.slice(0,4), +ks.slice(5,7)-1, +ks.slice(8,10)); }
+function pull(a, k){ var i = a.indexOf(k); if(i>=0) a.splice(i,1); }
+function toggleSched(ks){
+  var d = kd(ks);
+  if(isSched(d)){                       /* 通う日 → お休みに */
+    pull(DB.extra, ks);
+    if(DB.off.indexOf(ks) < 0) DB.off.push(ks);
+  } else {                              /* お休み → 通う日に */
+    pull(DB.off, ks);
+    if(!byWday(d) && DB.extra.indexOf(ks) < 0) DB.extra.push(ks);
+  }
+  DB.off.sort(); DB.extra.sort(); save(); render();
+}
+function schedCount(y, m){
+  var n = new Date(y,m+1,0).getDate(), c = 0;
+  for(var dd=1; dd<=n; dd++) if(isSched(new Date(y,m,dd))) c++;
+  return c;
 }
 var ft;
 function flash(){
@@ -186,8 +242,31 @@ function flash(){
   el.className = 'saved on'; clearTimeout(ft);
   ft = setTimeout(function(){ el.className = 'saved'; }, 900);
 }
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); flash(); }catch(e){} }
+var SAVE_OK = true, LAST_SEEN = null;
+function save(){
+  try{
+    localStorage.setItem(KEY, JSON.stringify(DB));
+    var back = localStorage.getItem(KEY);
+    SAVE_OK = !!back && back.length > 10;
+    if(SAVE_OK) flash();
+  }catch(e){ SAVE_OK = false; }
+  if(!SAVE_OK){ var w = document.getElementById('warn'); if(w) w.style.display = 'block'; }
+}
 load();
+/* 前回ひらいた時刻（保存が効いているかの手がかり） */
+try{
+  LAST_SEEN = localStorage.getItem(KEY + '_seen');
+  localStorage.setItem(KEY + '_seen', new Date().toISOString());
+}catch(e){ SAVE_OK = false; }
+/* 消えにくくするようブラウザに依頼（できないこともあります） */
+try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
+function seenText(){
+  if(!LAST_SEEN) return null;
+  var d = new Date(LAST_SEEN);
+  if(isNaN(d)) return null;
+  return (d.getMonth()+1)+'月'+d.getDate()+'日 '
+    + ('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+}
 
 /* ==================== 日付 ==================== */
 var WD = ['日','月','火','水','木','金','土'];
@@ -214,7 +293,8 @@ var GO = [
   {v:'go',   t:'行けた',       s:'時間どおり・最後までいた', c:'var(--blue)'},
   {v:'late', t:'遅刻した',     s:'遅れて行った',             c:'var(--amber)'},
   {v:'half', t:'途中で帰った', s:'早く帰った',               c:'var(--amber)'},
-  {v:'no',   t:'行けなかった', s:'休んだ',                   c:'var(--gray)'}
+  {v:'no',   t:'行けなかった', s:'休んだ',                   c:'var(--gray)'},
+  {v:'off',  t:'通う日じゃない', s:'もともと お休みの日',      c:'var(--gray)'}
 ];
 /* 理由をたずねる見出し */
 var WHYQ = {late:'遅れた理由は？', half:'早く帰った理由は？', no:'行けなかった理由は？'};
@@ -256,20 +336,45 @@ function viewHome(){
        + (mins(r) ? '　<span style="font-weight:normal;color:var(--soft);font-size:14px">（'+hmText(mins(r))+'）</span>' : '')+'</dd>';
     if(r.memo) h += '<dt>メモ</dt><dd style="font-weight:normal">'+esc(r.memo)+'</dd>';
     h += '</dl><button class="big ghost" style="margin-top:12px" onclick="startRec()">書きなおす</button></div>';
+  } else if(!isSched(cur)){
+    h += '<div class="card"><h2>この日は お休みの日です</h2>'
+       + '<p class="note">'
+       +   (isOff(cur) ? '事業所の所定休に登録されています。'
+                       : WD[cur.getDay()]+'曜日は「通う日」に入っていません。')
+       + '記録しなくて大丈夫です。</p>'
+       + '<button class="big ghost" onclick="startRec()">それでも記録する</button>'
+       + '<button class="sub" onclick="toggleSched(\''+k+'\')">この日を「通う日」にする</button></div>';
   } else {
     h += '<button class="big" onclick="startRec()">この日のことを記録する'
        + '<small>質問は2つ。あてはまるときだけ、あと1〜2つ</small></button>'
+       + '<button class="sub" onclick="toggleSched(\''+k+'\')">この日は「お休みの日」にする</button>'
        + '<div style="height:14px"></div>';
   }
 
-  h += '<div class="card"><h2>'+(cur.getMonth()+1)+'月の回数</h2>'
+  var YY = cur.getFullYear(), MM = cur.getMonth();
+  h += '<div class="card"><h2>'+(MM+1)+'月の回数</h2>'
      + '<div class="mcount">'
      +   '<div style="--cc:var(--blue)"><b>'+c.go+'</b><span>行けた</span></div>'
      +   '<div style="--cc:var(--amber)"><b>'+c.late+'</b><span>遅刻した</span></div>'
      +   '<div style="--cc:var(--amber)"><b>'+c.half+'</b><span>途中で帰った</span></div>'
      +   '<div style="--cc:var(--gray)"><b>'+c.no+'</b><span>行けなかった</span></div>'
      + '</div>'
-     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>（遅刻・早帰りを含む）</span></div>'
+     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>'
+     +   '（遅刻・早帰りを含む／通う予定 '+schedCount(YY,MM)+'日）</span></div>'
+     + (c.off ? '<p class="note" style="margin:9px 0 0">このほかに、もともとお休みの日が '+c.off+' 日ありました。'
+                + '上の数には入れていません。</p>' : '')
+     + '</div>';
+
+  /* 保存の状態 */
+  var sv = seenText(), nd2 = Object.keys(DB.days).length;
+  h += '<div class="card" style="border-color:'+(sv?'var(--rule)':'var(--red)')+'">'
+     + '<h2 style="font-size:15.5px">保存の状態</h2>'
+     + (sv
+        ? '<p class="note" style="margin:0">前にひらいたのは <b>'+sv+'</b>。'
+          + 'いま <b>'+nd2+'日分</b> の記録が、このスマホに残っています。</p>'
+        : '<p class="note" style="margin:0;color:var(--red)"><b>前にひらいた記録が見つかりません。</b><br>'
+          + 'このままだと、アプリを閉じると入力が消えてしまいます。'
+          + '下の「せってい」から記録を書き出して、保管してください。</p>')
      + '</div>';
   return h;
 }
@@ -280,9 +385,9 @@ function goToday(){ cur = new Date(today); render(); }
 var step = 0;
 function steps(){
   var r = rec(key(cur)), a = ['go'];
-  if(r.go && r.go !== 'no') a.push('time');
+  if(r.go && r.go !== 'no' && r.go !== 'off') a.push('time');
   a.push('cond');
-  if(r.go && r.go !== 'go') a.push('why');
+  if(r.go && r.go !== 'go' && r.go !== 'off') a.push('why');
   if(r.cond === 'bad') a.push('cope');
   return a;
 }
@@ -405,7 +510,7 @@ function hmText(m){
   return (h ? h+'時間' : '') + (mm ? mm+'分' : (h ? '' : '0分'));
 }
 function tally(y, m){
-  var c = {go:0,late:0,half:0,no:0,good:0,ok:0,bad:0,rec:0,mins:0,nmins:0,why:{},cope:{}};
+  var c = {go:0,late:0,half:0,no:0,off:0,good:0,ok:0,bad:0,rec:0,mins:0,nmins:0,why:{},cope:{}};
   monthDays(y,m).forEach(function(o){
     var r = o.r;
     if(r.go) c[r.go]++;
@@ -492,7 +597,11 @@ function trend(){
   return s + '</svg>';
 }
 function dayTable(y, m){
-  var rows = monthDays(y,m).filter(function(o){ return o.r.go || o.r.cond; });
+  var rows = monthDays(y,m).filter(function(o){
+    var r = o.r;
+    if(r.go === 'off' && !r.cond && !r.memo) return false;
+    return r.go || r.cond;
+  });
   if(!rows.length) return '<p class="nodata">記録がありません。</p>';
   var h = '<table class="lst"><tr><th>日</th><th>通えたか</th><th>時間</th><th>体調</th><th>理由／やったこと</th></tr>';
   rows.forEach(function(o){
@@ -534,6 +643,7 @@ function viewRev(){
       + '<button class="sub" onclick="revOpen=false;render()">とじる</button>';
   }
 
+  var YY = y, MM = m;
   h += '<div class="card"><h2>'+(m+1)+'月の回数</h2>'
      + '<div class="mcount">'
      +   '<div style="--cc:var(--blue)"><b>'+c.go+'</b><span>行けた</span></div>'
@@ -541,7 +651,10 @@ function viewRev(){
      +   '<div style="--cc:var(--amber)"><b>'+c.half+'</b><span>途中で帰った</span></div>'
      +   '<div style="--cc:var(--gray)"><b>'+c.no+'</b><span>行けなかった</span></div>'
      + '</div>'
-     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>（遅刻・早帰りを含む）</span></div>'
+     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>'
+     +   '（遅刻・早帰りを含む／通う予定 '+schedCount(YY,MM)+'日）</span></div>'
+     + (c.off ? '<p class="note" style="margin:9px 0 0">このほかに、もともとお休みの日が '+c.off+' 日ありました。'
+                + '上の数には入れていません。</p>' : '')
      + '</div>';
 
   var wrows = DB.why.map(function(it){ return {t:it.t, v:c.why[it.id]||0}; })
@@ -599,6 +712,42 @@ function viewRev(){
 function viewSet(){
   var h = '<h1 class="sc">せってい</h1>';
 
+  h += '<div class="card"><h2>通う曜日<em>いつもの予定</em></h2>'
+     + '<p class="note">えらんだ曜日だけ「記録する」が出ます。'
+     + 'ほかの曜日は「お休みの日」になり、回数にも入りません。</p>'
+     + '<div class="wd">';
+  for(var w=0; w<7; w++){
+    var on = DB.wdays.indexOf(w) >= 0;
+    h += '<button class="wdb" aria-pressed="'+on+'" onclick="toggleWd('+w+')">'+WD[w]+'</button>';
+  }
+  h += '</div></div>';
+
+  /* 通う日カレンダー（曜日・所定休・追加日をまとめた最終結果） */
+  var sy = setMonth.getFullYear(), sm = setMonth.getMonth();
+  h += '<div class="card"><h2>通う日<em>日づけごとに決める</em></h2>'
+     + '<p class="note">日づけをタップすると、<b>通う日（青）</b>と<b>お休み（白）</b>が切りかわります。'
+     + '上の曜日で決めた予定がもとになっていて、祝日・お盆・その週だけの変更はここで直せます。</p>'
+     + '<div class="mhead" style="margin-bottom:10px">'
+     +   '<button onclick="moveSet(-1)">‹</button><b>'+sy+'年'+(sm+1)+'月</b>'
+     +   '<button onclick="moveSet(1)">›</button></div>'
+     + '<div class="cal">';
+  for(var w2=0; w2<7; w2++) h += '<span class="cw">'+WD[w2]+'</span>';
+  var first = new Date(sy, sm, 1).getDay(), nd = new Date(sy, sm+1, 0).getDate();
+  for(var i2=0; i2<first; i2++) h += '<span></span>';
+  for(var dd=1; dd<=nd; dd++){
+    var dt = new Date(sy, sm, dd), kk = key(dt);
+    h += '<button class="cd" aria-pressed="'+isSched(dt)+'" onclick="toggleSched(\''+kk+'\')">'+dd+'</button>';
+  }
+  h += '</div>'
+     + '<p class="note" style="margin:12px 0 10px">この月の通う予定　'
+     +   '<b style="color:var(--blue);font-size:21px">'+schedCount(sy,sm)+'</b> 日</p>'
+     + '<button class="dbtn" onclick="addHolidays('+sy+')">'+sy+'年の祝日を お休みにする</button>'
+     + (DB.off.length
+        ? '<p class="note" style="margin:0">お休みに指定した日　ぜんぶで <b>'+DB.off.length+'日</b>'
+          + '　<span onclick="clearOff()" style="color:var(--red);text-decoration:underline">ぜんぶ消す</span></p>'
+        : '')
+     + '</div>';
+
   h += '<div class="card"><h2>「行けなかった理由」の選択肢</h2>'
      + '<p class="note">本人が言いやすい言葉に書きかえてください。</p>';
   DB.why.forEach(function(it,i){
@@ -626,6 +775,46 @@ function viewSet(){
      + '<button class="dbtn warn" onclick="doClear()">記録をぜんぶ消す</button></div>';
   return h;
 }
+var offMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+function offMoveMonth(n){
+  offMonth = new Date(offMonth.getFullYear(), offMonth.getMonth()+n, 1); render();
+}
+function offCal(){
+  var y = offMonth.getFullYear(), m = offMonth.getMonth();
+  var first = new Date(y,m,1).getDay(), n = new Date(y,m+1,0).getDate();
+  var h = '<div class="mhead" style="margin-bottom:10px">'
+        + '<button onclick="offMoveMonth(-1)">‹</button>'
+        + '<b style="font-size:17px">'+y+'年'+(m+1)+'月</b>'
+        + '<button onclick="offMoveMonth(1)">›</button></div>';
+  h += '<div class="cal">';
+  for(var w=0; w<7; w++) h += '<span class="ch">'+WD[w]+'</span>';
+  for(var i=0; i<first; i++) h += '<span></span>';
+  for(var d=1; d<=n; d++){
+    var dt = new Date(y,m,d), on = isOff(dt), nosch = DB.wdays.indexOf(dt.getDay()) < 0;
+    h += '<button class="cd'+(nosch?' dim':'')+'" aria-pressed="'+on+'" '
+       + 'onclick="toggleOff('+y+','+m+','+d+')">'+d+'</button>';
+  }
+  return h + '</div>';
+}
+function toggleOff(y,m,d){
+  var k = key(new Date(y,m,d)), i = DB.off.indexOf(k);
+  if(i>=0) DB.off.splice(i,1); else DB.off.push(k);
+  DB.off.sort(); save(); render();
+}
+function addHolidays(y){
+  var list = HOLIDAYS[String(y)];
+  if(!list) return;
+  list.forEach(function(k){ if(DB.off.indexOf(k) < 0) DB.off.push(k); });
+  DB.off.sort(); save(); render();
+}
+function clearOff(){ DB.off = []; save(); render(); }
+var setMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+function moveSet(n){ setMonth = new Date(setMonth.getFullYear(), setMonth.getMonth()+n, 1); render(); }
+function toggleWd(w){
+  var i = DB.wdays.indexOf(w);
+  if(i>=0) DB.wdays.splice(i,1); else DB.wdays.push(w);
+  DB.wdays.sort(); save(); render();
+}
 function add(f){ DB[f].push({id:f[0]+Date.now(), t:'あたらしい項目'}); save(); render(); }
 function ren(f,i,v){ v = String(v).trim(); if(!v) return; DB[f][i].t = v; save(); }
 function del(f,i){ DB[f].splice(i,1); save(); render(); }
@@ -639,7 +828,8 @@ function doImport(){
   var b = document.getElementById('ioBox');
   try{
     var o = JSON.parse(b.value); if(!o || typeof o !== 'object') throw 0;
-    DB = {v:1, why:o.why||DB.why, cope:o.cope||DB.cope, days:o.days||{}, reviews:o.reviews||{}};
+    DB = {v:1, why:o.why||DB.why, cope:o.cope||DB.cope, wdays:o.wdays||DB.wdays,
+          off:o.off||[], extra:o.extra||[], days:o.days||{}, reviews:o.reviews||{}};
     save(); render();
   }catch(e){ b.value = '読みこめませんでした。書き出した文字をそのまま貼ってください。'; }
 }
@@ -650,7 +840,8 @@ function doClear(){
     b.placeholder = '本当に消す場合は、この欄に「けす」と入力してから、もう一度ボタンを押してください。';
     b.focus(); return;
   }
-  DB = {v:1, why:mk(DEF_WHY,'w'), cope:mk(DEF_COPE,'c'), days:{}, reviews:{}};
+  DB = {v:1, why:mk(DEF_WHY,'w'), cope:mk(DEF_COPE,'c'), wdays:[1,2,3,4,5],
+        off:[], extra:[], days:{}, reviews:{}};
   save(); render();
 }
 
