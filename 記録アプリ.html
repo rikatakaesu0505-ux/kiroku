@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1C5590">
+<title>通所と体調の記録</title>
+<style>
+:root{
+  --ink:#17202A; --soft:#4A5560; --line:#1F2933; --bg:#EDF1F4; --card:#fff;
+  --green:#1B7049; --blue:#1C5590; --amber:#8A4A00; --red:#A8301F; --gray:#5A6672;
+  --rule:#C9D2D9;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{background:var(--bg);color:var(--ink);
+  font-family:"Meiryo UI","Hiragino Kaku Gothic ProN","Yu Gothic UI",sans-serif;
+  font-size:17px;line-height:1.7;-webkit-text-size-adjust:100%;}
+button,input,textarea{font-family:inherit;color:inherit;}
+button{cursor:pointer;}
+.app{max-width:520px;margin:0 auto;padding:14px 14px 104px;}
+h1.sc{margin:2px 2px 12px;font-size:21px;}
+
+/* 日付バー */
+.datebar{display:flex;align-items:center;gap:8px;background:var(--card);
+  border:3px solid var(--line);border-radius:14px;padding:6px;margin-bottom:14px;}
+.datebar button{width:50px;height:50px;border:2px solid var(--line);border-radius:10px;
+  background:#fff;font-size:24px;line-height:1;}
+.datebar button[disabled]{opacity:.3;}
+.datebar .dnow{flex:1;text-align:center;}
+.datebar .dnow b{display:block;font-size:19px;}
+.datebar .dnow span{display:block;font-size:12px;color:var(--soft);}
+
+/* カード */
+.card{background:var(--card);border:3px solid var(--line);border-radius:14px;
+  padding:14px;margin-bottom:14px;}
+.card > h2{margin:0 0 4px;font-size:18px;}
+.card > h2 em{font-style:normal;font-size:13px;color:var(--soft);font-weight:normal;margin-left:7px;}
+.card p.note{margin:0 0 10px;font-size:14px;color:var(--soft);line-height:1.65;}
+
+/* 今月の回数 */
+.mcount{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.mcount div{border:3px solid var(--cc);border-radius:11px;padding:8px 2px;text-align:center;}
+.mcount b{display:block;font-size:30px;line-height:1.15;color:var(--cc);}
+.mcount span{display:block;font-size:11.5px;color:var(--soft);}
+.total{margin-top:11px;border:3px solid var(--blue);background:#E9F0F8;border-radius:11px;
+  padding:9px 14px;display:flex;align-items:baseline;gap:10px;}
+.total b{font-size:30px;line-height:1;color:var(--blue);}
+.total span{font-size:13.5px;color:var(--soft);line-height:1.5;}
+
+/* 大きなボタン */
+.big{width:100%;min-height:64px;border:3px solid var(--blue);border-radius:12px;
+  background:var(--blue);color:#fff;font-size:18px;font-weight:bold;line-height:1.3;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.big small{font-size:12.5px;font-weight:bold;opacity:.9;}
+.big.ghost{background:#fff;color:var(--blue);}
+.big:active{transform:scale(.985);}
+.sub{width:100%;min-height:48px;border:2px solid var(--rule);border-radius:10px;background:#fff;
+  color:var(--soft);font-size:15px;font-weight:bold;margin-top:10px;}
+
+/* 1問ずつ */
+.qwrap{min-height:64vh;display:flex;flex-direction:column;}
+.prog{display:flex;gap:6px;margin-bottom:6px;}
+.prog i{flex:1;height:9px;border-radius:5px;background:#D9E0E6;}
+.prog i.f{background:var(--blue);}
+.pnum{font-size:13.5px;color:var(--soft);margin-bottom:16px;}
+.qttl{font-size:25px;font-weight:bold;line-height:1.4;margin:0 0 6px;}
+.qsub{font-size:14.5px;color:var(--soft);margin:0 0 18px;line-height:1.6;}
+.opts{display:flex;flex-direction:column;gap:11px;}
+.opt{min-height:74px;border:3px solid var(--c);border-radius:12px;background:#fff;color:var(--c);
+  font-size:21px;font-weight:bold;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;line-height:1.25;padding:6px;}
+.opt small{font-size:13px;font-weight:bold;opacity:.85;}
+.opt[aria-pressed="true"]{background:var(--c);color:#fff;}
+.opt:active{transform:scale(.985);}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.chip{min-height:62px;border:3px solid var(--c);border-radius:11px;background:#fff;color:var(--c);
+  font-size:15.5px;font-weight:bold;line-height:1.3;padding:6px 4px;display:flex;
+  align-items:center;justify-content:center;text-align:center;gap:5px;}
+.chip[aria-pressed="true"]{background:var(--c);color:#fff;}
+.chip .ck{font-size:17px;}
+.qfoot{margin-top:auto;padding-top:20px;display:flex;gap:10px;}
+.qfoot button{flex:1;min-height:52px;border:2px solid var(--rule);border-radius:10px;
+  background:#fff;color:var(--soft);font-size:15px;font-weight:bold;}
+.qfoot button.go{border-color:var(--blue);background:var(--blue);color:#fff;font-size:17px;}
+.fin{text-align:center;padding:22px 10px 10px;}
+.fin .mk{width:84px;height:84px;margin:0 auto 14px;border-radius:50%;background:var(--green);
+  color:#fff;font-size:44px;display:flex;align-items:center;justify-content:center;}
+.fin h2{margin:0 0 6px;font-size:24px;}
+.fin p{margin:0;color:var(--soft);font-size:15px;line-height:1.7;}
+
+.timerow{display:flex;align-items:center;gap:8px;}
+.timerow input{flex:1;min-width:0;min-height:54px;border:3px solid var(--rule);border-radius:10px;
+  padding:0 8px;font-size:19px;background:#fff;}
+.timerow span{font-size:17px;color:var(--soft);}
+textarea{width:100%;min-height:84px;border:3px solid var(--rule);border-radius:10px;
+  padding:9px;font-size:16px;line-height:1.7;resize:vertical;background:#fff;}
+
+/* 記録ずみ表示 */
+.sumline{display:grid;grid-template-columns:86px 1fr;gap:5px 10px;margin:0;}
+.sumline dt{color:var(--soft);font-size:13px;padding-top:3px;line-height:1.4;}
+.sumline dd{margin:0;font-weight:bold;font-size:15.5px;line-height:1.6;}
+
+/* ふりかえり */
+.locked{text-align:center;padding:14px 8px 8px;}
+.locked .ic{font-size:40px;line-height:1;margin-bottom:8px;color:var(--gray);}
+.mhead{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
+.mhead button{width:48px;height:48px;border:3px solid var(--line);border-radius:10px;
+  background:#fff;font-size:22px;line-height:1;}
+.mhead b{flex:1;text-align:center;font-size:19px;}
+.hbar{display:grid;grid-template-columns:106px 1fr 50px;align-items:center;gap:8px;margin-bottom:8px;}
+.hbar .lb{font-size:13.5px;font-weight:bold;line-height:1.35;}
+.hbar .track{height:22px;background:#E7ECF0;border-radius:4px;overflow:hidden;}
+.hbar .fl{height:100%;border-radius:0 4px 4px 0;}
+.hbar .val{font-size:14px;font-weight:bold;text-align:right;}
+.chart{width:100%;height:auto;display:block;}
+.chart .grid{stroke:#DDE3E8;stroke-width:1;}
+.chart .axis{fill:var(--soft);font-size:10px;font-family:inherit;}
+.tip{margin-top:8px;border:2px solid var(--rule);border-radius:9px;padding:8px 10px;
+  font-size:13.5px;color:var(--soft);min-height:40px;line-height:1.6;background:#F7F9FA;}
+.nodata{margin:0;padding:16px 6px;text-align:center;color:var(--soft);font-size:14.5px;line-height:1.75;}
+table.lst{width:100%;border-collapse:collapse;font-size:13px;}
+table.lst th,table.lst td{border:2px solid var(--rule);padding:5px 6px;text-align:left;
+  vertical-align:top;line-height:1.5;}
+table.lst th{background:#E6ECF1;font-size:11.5px;white-space:nowrap;}
+table.lst td.d{white-space:nowrap;font-weight:bold;}
+table.lst td.g,table.lst td.c,table.lst td.t{white-space:nowrap;font-size:11.5px;}
+
+/* せってい */
+.itemrow{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.itemrow input[type=text]{flex:1;min-width:0;min-height:48px;border:2px solid var(--rule);
+  border-radius:9px;padding:0 10px;font-size:16px;background:#fff;}
+.itemrow button{min-height:48px;padding:0 13px;border:2px solid var(--red);border-radius:9px;
+  background:#fff;color:var(--red);font-size:14px;font-weight:bold;}
+.dbtn{width:100%;min-height:52px;border:3px solid var(--blue);border-radius:11px;background:#fff;
+  color:var(--blue);font-size:16px;font-weight:bold;margin-bottom:10px;}
+.dbtn.warn{border-color:var(--red);color:var(--red);}
+.io{width:100%;min-height:104px;border:2px solid var(--rule);border-radius:9px;padding:8px;
+  font-size:12px;font-family:monospace;background:#fff;}
+
+.saved{position:fixed;left:50%;transform:translateX(-50%);bottom:94px;background:var(--green);
+  color:#fff;font-size:14px;font-weight:bold;padding:9px 20px;border-radius:999px;
+  opacity:0;transition:opacity .22s;pointer-events:none;z-index:20;}
+.saved.on{opacity:1;}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:3px solid var(--line);
+  display:flex;max-width:520px;margin:0 auto;padding-bottom:env(safe-area-inset-bottom);z-index:10;}
+nav button{flex:1;height:72px;border:none;background:none;font-size:12.5px;font-weight:bold;
+  color:var(--soft);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+nav button b{font-size:21px;line-height:1;}
+nav button.on{color:var(--blue);background:#E9F0F8;}
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+<div class="saved" id="saved">ほぞんしました</div>
+
+<nav>
+  <button id="navHome" class="on" onclick="go('home')"><b>◉</b>きろく</button>
+  <button id="navRev" onclick="go('rev')"><b>▥</b>ふりかえり</button>
+  <button id="navSet" onclick="go('set')"><b>⚙</b>せってい</button>
+</nav>
+
+<script>
+/* ==================== データ ==================== */
+var KEY = 'tsusho_v1';
+var DEF_WHY = ['体調がわるい','眠れなかった','気分が落ちた','不安が強い','痛みがある',
+               '通院・用事','天気がわるい','理由がわからない'];
+var DEF_COPE = ['休んだ','横になった','早めに寝た','深呼吸した','散歩した',
+                'だれかに話した','事業所に連絡した','支援者に相談した','好きなことをした'];
+var DB = {v:1, why:[], cope:[], days:{}, reviews:{}};
+
+function mk(list, p){ return list.map(function(t,i){ return {id:p+i, t:t}; }); }
+function load(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(raw){ var o = JSON.parse(raw);
+      DB = {v:1, why:o.why||[], cope:o.cope||[], days:o.days||{}, reviews:o.reviews||{}}; }
+  }catch(e){}
+  if(!DB.why.length)  DB.why  = mk(DEF_WHY, 'w');
+  if(!DB.cope.length) DB.cope = mk(DEF_COPE,'c');
+}
+var ft;
+function flash(){
+  var el = document.getElementById('saved'); if(!el) return;
+  el.className = 'saved on'; clearTimeout(ft);
+  ft = setTimeout(function(){ el.className = 'saved'; }, 900);
+}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(DB)); flash(); }catch(e){} }
+load();
+
+/* ==================== 日付 ==================== */
+var WD = ['日','月','火','水','木','金','土'];
+var today = new Date(); today.setHours(0,0,0,0);
+var cur = new Date(today);
+var calMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+function key(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+function rec(k){
+  var r = DB.days[k];
+  if(!r) r = DB.days[k] = {};
+  if(!r.why) r.why = [];
+  if(!r.cope) r.cope = [];
+  return r;
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function names(list, ids){
+  var a = [];
+  (ids||[]).forEach(function(id){ for(var i=0;i<list.length;i++) if(list[i].id===id) a.push(list[i].t); });
+  return a;
+}
+
+/* ==================== 選択肢 ==================== */
+var GO = [
+  {v:'go',   t:'行けた',       s:'時間どおり・最後までいた', c:'var(--blue)'},
+  {v:'late', t:'遅刻した',     s:'遅れて行った',             c:'var(--amber)'},
+  {v:'half', t:'途中で帰った', s:'早く帰った',               c:'var(--amber)'},
+  {v:'no',   t:'行けなかった', s:'休んだ',                   c:'var(--gray)'}
+];
+/* 理由をたずねる見出し */
+var WHYQ = {late:'遅れた理由は？', half:'早く帰った理由は？', no:'行けなかった理由は？'};
+var COND = [
+  {v:'good', t:'よい',   s:'いつもどおり動ける',       c:'var(--green)'},
+  {v:'ok',   t:'ふつう', s:'少しつらいが、動ける',     c:'var(--blue)'},
+  {v:'bad',  t:'わるい', s:'つらい。ほとんど動けない', c:'var(--red)'}
+];
+function lab(list, v){ for(var i=0;i<list.length;i++) if(list[i].v===v) return list[i].t; return ''; }
+
+/* ==================== 画面：きろく ==================== */
+function viewHome(){
+  var k = key(cur), r = rec(k), isToday = (k === key(today));
+  var next = new Date(cur); next.setDate(next.getDate()+1);
+  var c = tally(cur.getFullYear(), cur.getMonth());
+  var h = '';
+
+  h += '<div class="datebar">'
+     +   '<button onclick="move(-1)" aria-label="前の日">‹</button>'
+     +   '<div class="dnow"><b onclick="goToday()">'+(cur.getMonth()+1)+'月'+cur.getDate()+'日（'+WD[cur.getDay()]+'）</b>'
+     +     '<span'+(isToday?'':' onclick="goToday()" style="text-decoration:underline"')+'>'
+     +       (isToday ? 'きょう' : 'タップで「きょう」へもどる')+'</span></div>'
+     +   '<button onclick="move(1)" '+(next>today?'disabled':'')+' aria-label="次の日">›</button>'
+     + '</div>';
+
+  if(r.go && r.cond){
+    h += '<div class="card"><h2>この日の記録<em>記録ずみ</em></h2><dl class="sumline">'
+       + '<dt>通えたか</dt><dd>'+lab(GO,r.go)+'</dd>'
+       + '<dt>体調</dt><dd>'+lab(COND,r.cond)+'</dd>';
+    if(r.go !== 'go'){
+      var w = names(DB.why, r.why); if(r.whyMemo) w.push(r.whyMemo);
+      h += '<dt>理由</dt><dd>'+(w.length?esc(w.join('、')):'—')+'</dd>';
+    }
+    if(r.cond === 'bad'){
+      var cp = names(DB.cope, r.cope); if(r.copeMemo) cp.push(r.copeMemo);
+      h += '<dt>どうしたか</dt><dd>'+(cp.length?esc(cp.join('、')):'—')+'</dd>';
+    }
+    if(r.tin || r.tout) h += '<dt>時間</dt><dd>'+(r.tin||'')+'〜'+(r.tout||'')
+       + (mins(r) ? '　<span style="font-weight:normal;color:var(--soft);font-size:14px">（'+hmText(mins(r))+'）</span>' : '')+'</dd>';
+    if(r.memo) h += '<dt>メモ</dt><dd style="font-weight:normal">'+esc(r.memo)+'</dd>';
+    h += '</dl><button class="big ghost" style="margin-top:12px" onclick="startRec()">書きなおす</button></div>';
+  } else {
+    h += '<button class="big" onclick="startRec()">この日のことを記録する'
+       + '<small>質問は2つ。あてはまるときだけ、あと1〜2つ</small></button>'
+       + '<div style="height:14px"></div>';
+  }
+
+  h += '<div class="card"><h2>'+(cur.getMonth()+1)+'月の回数</h2>'
+     + '<div class="mcount">'
+     +   '<div style="--cc:var(--blue)"><b>'+c.go+'</b><span>行けた</span></div>'
+     +   '<div style="--cc:var(--amber)"><b>'+c.late+'</b><span>遅刻した</span></div>'
+     +   '<div style="--cc:var(--amber)"><b>'+c.half+'</b><span>途中で帰った</span></div>'
+     +   '<div style="--cc:var(--gray)"><b>'+c.no+'</b><span>行けなかった</span></div>'
+     + '</div>'
+     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>（遅刻・早帰りを含む）</span></div>'
+     + '</div>';
+  return h;
+}
+function move(n){ var d = new Date(cur); d.setDate(d.getDate()+n); if(d>today) return; cur = d; render(); }
+function goToday(){ cur = new Date(today); render(); }
+
+/* ==================== 画面：1問ずつ ==================== */
+var step = 0;
+function steps(){
+  var r = rec(key(cur)), a = ['go'];
+  if(r.go && r.go !== 'no') a.push('time');
+  a.push('cond');
+  if(r.go && r.go !== 'go') a.push('why');
+  if(r.cond === 'bad') a.push('cope');
+  return a;
+}
+function lastTimes(){
+  var ks = Object.keys(DB.days).sort().reverse();
+  for(var i=0;i<ks.length;i++){ var r = DB.days[ks[i]]; if(r.tin && r.tout) return r; }
+  return null;
+}
+function useLast(){
+  var lt = lastTimes(); if(!lt) return;
+  var r = rec(key(cur)); r.tin = lt.tin; r.tout = lt.tout; save(); render();
+}
+function startRec(){ step = 0; go('rec'); }
+function viewRec(){
+  var r = rec(key(cur)), st = steps();
+  if(step >= st.length) return viewFin(r);
+  var f = st[step];
+  var h = '<div class="qwrap"><div class="prog">';
+  for(var i=0;i<st.length;i++) h += '<i class="'+(i<=step?'f':'')+'"></i>';
+  h += '</div><div class="pnum">'+(step+1)+'つめ ／ '+st.length+'つ</div>';
+
+  if(f === 'time'){
+    var lt = lastTimes();
+    h += '<h2 class="qttl">何時から 何時まで？</h2>'
+       + '<p class="qsub">わからないときは、だいたいで大丈夫です。空けたままでも進めます。</p>'
+       + '<div class="timerow">'
+       +   '<input type="time" value="'+(r.tin||'')+'" onchange="setVal(\'tin\',this.value)">'
+       +   '<span>〜</span>'
+       +   '<input type="time" value="'+(r.tout||'')+'" onchange="setVal(\'tout\',this.value)">'
+       + '</div>'
+       + (mins(r) ? '<p class="qsub" style="margin:12px 0 0">いた時間　<b style="color:var(--ink);font-size:17px">'
+                    + hmText(mins(r)) + '</b></p>' : '')
+       + (lt && (!r.tin || !r.tout)
+          ? '<button class="sub" style="margin-top:14px" onclick="useLast()">いつもと同じ（'
+            + lt.tin + '〜' + lt.tout + '）</button>' : '');
+  } else if(f === 'go' || f === 'cond'){
+    var q = (f==='go')
+      ? {t:'この日は 通えましたか？', s:'休んだ日も記録しておくと、あとで役に立ちます。', list:GO}
+      : {t:'この日の 体調は？',       s:'正解はありません。いちばん近いものを選んでください。', list:COND};
+    h += '<h2 class="qttl">'+q.t+'</h2><p class="qsub">'+q.s+'</p><div class="opts">';
+    q.list.forEach(function(o){
+      h += '<button class="opt" style="--c:'+o.c+'" aria-pressed="'+(r[f]===o.v)+'" '
+         + 'onclick="answer(this,\''+f+'\',\''+o.v+'\')">'+o.t+'<small>'+o.s+'</small></button>';
+    });
+    h += '</div>';
+  } else {
+    var isWhy = (f === 'why');
+    var list = isWhy ? DB.why : DB.cope;
+    var sel  = isWhy ? r.why  : r.cope;
+    var col  = isWhy ? 'var(--gray)' : 'var(--green)';
+    h += '<h2 class="qttl">'+(isWhy ? (WHYQ[r.go] || '理由は？') : '体調がわるいとき、どうしましたか？')+'</h2>'
+       + '<p class="qsub">'+(isWhy
+           ? 'あてはまるものを、いくつでも選べます。わからないときは「理由がわからない」で大丈夫です。'
+           : '少しでもやったことを選んでください。あとで「効いたこと」を探す手がかりになります。')+'</p>'
+       + '<div class="chips">';
+    list.forEach(function(it){
+      var on = sel.indexOf(it.id) >= 0;
+      h += '<button class="chip" style="--c:'+col+'" aria-pressed="'+on+'" '
+         + 'onclick="toggleChip(\''+f+'\',\''+it.id+'\')">'
+         + (on?'<span class="ck">✓</span>':'') + esc(it.t) + '</button>';
+    });
+    h += '</div>'
+       + '<p class="qsub" style="margin:16px 0 6px">ほかにあれば（書かなくてOK）</p>'
+       + '<textarea style="min-height:62px" oninput="setVal(\''+(isWhy?'whyMemo':'copeMemo')+'\',this.value)">'
+       + esc((isWhy ? r.whyMemo : r.copeMemo) || '') + '</textarea>';
+  }
+
+  h += '<div class="qfoot">'
+     + (step>0 ? '<button onclick="step--;render()">‹ もどる</button>'
+               : '<button onclick="go(\'home\')">やめる</button>')
+     + ((r[f] || f==='why' || f==='cope' || f==='time')
+        ? '<button class="go" onclick="step++;render();window.scrollTo(0,0)">つぎへ ›</button>' : '')
+     + '</div></div>';
+  return h;
+}
+function answer(el, f, v){
+  var r = rec(key(cur));
+  r[f] = v;
+  if(f === 'go'   && v === 'go')   { r.why = [];  r.whyMemo = '';  }
+  if(f === 'cond' && v !== 'bad')  { r.cope = []; r.copeMemo = ''; }
+  save();
+  var bs = document.querySelectorAll('.opt');
+  for(var i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed', bs[i]===el ? 'true' : 'false');
+  step++;
+  setTimeout(function(){ render(); window.scrollTo(0,0); }, 190);
+}
+function toggleChip(f, id){
+  var r = rec(key(cur)), arr = (f==='why') ? r.why : r.cope, i = arr.indexOf(id);
+  if(i>=0) arr.splice(i,1); else arr.push(id);
+  save(); render();
+}
+function setVal(f, v){ rec(key(cur))[f] = v; save(); }
+
+function viewFin(r){
+  var h = '<div class="fin"><div class="mk">✓</div><h2>記録できました</h2>'
+        + '<p>ありがとうございます。<br>下は、書けるときだけで大丈夫です。</p></div>';
+  h += '<div class="card"><h2>メモ<em>書かなくてOK</em></h2>'
+     + '<textarea placeholder="その日にあったこと" oninput="setVal(\'memo\',this.value)">'
+     + esc(r.memo||'')+'</textarea></div>';
+  h += '<button class="big" onclick="go(\'home\')">おわる</button>';
+  h += '<button class="sub" onclick="step=0;render()">‹ 答えを見なおす</button>';
+  return h;
+}
+
+/* ==================== 集計 ==================== */
+function monthDays(y, m){
+  var n = new Date(y,m+1,0).getDate(), a = [];
+  for(var d=1; d<=n; d++){ var k = key(new Date(y,m,d)); a.push({d:d, k:k, r:DB.days[k]||{}}); }
+  return a;
+}
+function hm(t){ var a = /^(\d{1,2}):(\d{2})$/.exec(t||''); return a ? (+a[1])*60 + (+a[2]) : null; }
+function mins(r){
+  var a = hm(r.tin), b = hm(r.tout);
+  if(a===null || b===null) return 0;
+  var d = b - a; return (d > 0 && d < 24*60) ? d : 0;
+}
+function hmText(m){
+  if(!m) return '—';
+  var h = Math.floor(m/60), mm = m%60;
+  return (h ? h+'時間' : '') + (mm ? mm+'分' : (h ? '' : '0分'));
+}
+function tally(y, m){
+  var c = {go:0,late:0,half:0,no:0,good:0,ok:0,bad:0,rec:0,mins:0,nmins:0,why:{},cope:{}};
+  monthDays(y,m).forEach(function(o){
+    var r = o.r;
+    if(r.go) c[r.go]++;
+    if(r.cond) c[r.cond]++;
+    if(r.go || r.cond) c.rec++;
+    var mn = mins(r); if(mn){ c.mins += mn; c.nmins++; }
+    (r.why||[]).forEach(function(id){ c.why[id] = (c.why[id]||0)+1; });
+    (r.cope||[]).forEach(function(id){ c.cope[id] = (c.cope[id]||0)+1; });
+  });
+  return c;
+}
+
+/* ==================== グラフ（1色＋ラベル） ==================== */
+function hbars(rows, color, unit){
+  var mx = 1; rows.forEach(function(r){ mx = Math.max(mx, r.v); });
+  var h = '';
+  rows.forEach(function(r){
+    var w = Math.round(r.v/mx*100);
+    h += '<div class="hbar"><div class="lb">'+esc(r.t)+'</div>'
+       + '<div class="track">'+(r.v ? '<div class="fl" style="width:'+w+'%;background:'+color+'"></div>' : '')+'</div>'
+       + '<div class="val">'+r.v+(unit||'回')+'</div></div>';
+  });
+  return h;
+}
+var CLV = {good:1, ok:2, bad:3};
+function chartCond(y, m){
+  var list = monthDays(y,m), n = list.length;
+  var W=336, H=152, PL=36, PR=6, PT=12, PB=22;
+  var iw=W-PL-PR, ih=H-PT-PB, bw=iw/n, bar=Math.max(4, bw-2);
+  var s = '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="毎日の体調">';
+  ['よい','ふつう','わるい'].forEach(function(t,i){
+    var yy = PT + ih - ih*(i+1)/3;
+    s += '<line class="grid" x1="'+PL+'" y1="'+yy+'" x2="'+(W-PR)+'" y2="'+yy+'"/>'
+       + '<text class="axis" x="'+(PL-5)+'" y="'+(yy+3.5)+'" text-anchor="end">'+t+'</text>';
+  });
+  s += '<line class="grid" x1="'+PL+'" y1="'+(PT+ih)+'" x2="'+(W-PR)+'" y2="'+(PT+ih)+'"/>';
+  list.forEach(function(o,i){
+    var x = PL + i*bw + (bw-bar)/2, v = CLV[o.r.cond] || 0;
+    if(v){
+      var hh = ih*v/3;
+      s += '<rect x="'+x.toFixed(1)+'" y="'+(PT+ih-hh).toFixed(1)+'" width="'+bar.toFixed(1)
+         + '" height="'+hh.toFixed(1)+'" rx="3" fill="#1C5590"/>';
+    }
+    s += '<rect x="'+(PL+i*bw).toFixed(1)+'" y="'+PT+'" width="'+bw.toFixed(1)+'" height="'+ih
+       + '" fill="transparent" style="cursor:pointer" onclick="tip('+o.d+')"/>';
+  });
+  [1,10,20,n].forEach(function(d){
+    s += '<text class="axis" x="'+(PL+(d-0.5)*bw).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle">'+d+'</text>';
+  });
+  return s + '</svg>';
+}
+function tip(d){
+  var el = document.getElementById('tipBox'); if(!el) return;
+  var o = monthDays(calMonth.getFullYear(), calMonth.getMonth())[d-1], r = o.r, p = [];
+  if(r.go)   p.push(lab(GO,r.go));
+  if(r.cond) p.push('体調 '+lab(COND,r.cond));
+  var w = names(DB.why, r.why);  if(r.whyMemo)  w.push(r.whyMemo);
+  var c = names(DB.cope, r.cope); if(r.copeMemo) c.push(r.copeMemo);
+  el.innerHTML = '<b>'+(calMonth.getMonth()+1)+'月'+d+'日</b>　'+(p.length?p.join('／'):'記録なし')
+    + (w.length ? '<br>理由：'+esc(w.join('、')) : '')
+    + (c.length ? '<br>やったこと：'+esc(c.join('、')) : '')
+    + (r.memo ? '<br>'+esc(r.memo) : '');
+}
+function trend(){
+  var arr = [];
+  for(var i=5;i>=0;i--){
+    var dt = new Date(calMonth.getFullYear(), calMonth.getMonth()-i, 1);
+    var c = tally(dt.getFullYear(), dt.getMonth());
+    arr.push({m:dt.getMonth()+1, v:c.go+c.half, any:c.rec>0});
+  }
+  var mx = Math.max(1, Math.max.apply(null, arr.map(function(a){return a.v;})));
+  var W=336, H=118, PL=8, PR=8, PT=18, PB=22;
+  var iw=W-PL-PR, ih=H-PT-PB, bw=iw/6, bar=bw*0.56;
+  var s = '<svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="月ごとに行けた回数">';
+  s += '<line class="grid" x1="'+PL+'" y1="'+(PT+ih)+'" x2="'+(W-PR)+'" y2="'+(PT+ih)+'"/>';
+  arr.forEach(function(a,i){
+    var x = PL + i*bw + (bw-bar)/2, hh = ih*a.v/mx;
+    if(a.v) s += '<rect x="'+x.toFixed(1)+'" y="'+(PT+ih-hh).toFixed(1)+'" width="'+bar.toFixed(1)
+      + '" height="'+hh.toFixed(1)+'" rx="4" fill="#1C5590"/>';
+    if(a.any) s += '<text class="axis" x="'+(x+bar/2).toFixed(1)+'" y="'+(PT+ih-hh-5).toFixed(1)
+      + '" text-anchor="middle" style="font-weight:bold;fill:#17202A">'+a.v+'</text>';
+    s += '<text class="axis" x="'+(x+bar/2).toFixed(1)+'" y="'+(H-7)+'" text-anchor="middle">'+a.m+'月</text>';
+  });
+  return s + '</svg>';
+}
+function dayTable(y, m){
+  var rows = monthDays(y,m).filter(function(o){ return o.r.go || o.r.cond; });
+  if(!rows.length) return '<p class="nodata">記録がありません。</p>';
+  var h = '<table class="lst"><tr><th>日</th><th>通えたか</th><th>時間</th><th>体調</th><th>理由／やったこと</th></tr>';
+  rows.forEach(function(o){
+    var r = o.r, t = [];
+    var w = names(DB.why, r.why);   if(r.whyMemo)  w.push(r.whyMemo);
+    var c = names(DB.cope, r.cope); if(r.copeMemo) c.push(r.copeMemo);
+    if(w.length) t.push('理由：'+w.join('、'));
+    if(c.length) t.push('→ '+c.join('、'));
+    if(r.memo)   t.push(r.memo);
+    h += '<tr><td class="d">'+o.d+'</td><td class="g">'+lab(GO,r.go)+'</td>'
+       + '<td class="t">'+((r.tin||r.tout) ? (r.tin||'')+'<br>〜'+(r.tout||'') : '')+'</td>'
+       + '<td class="c">'+lab(COND,r.cond)+'</td><td>'+esc(t.join(' ／ '))+'</td></tr>';
+  });
+  return h + '</table>';
+}
+
+/* ==================== 画面：ふりかえり ==================== */
+var revOpen = false;
+function mkey(){ return calMonth.getFullYear()+'-'+('0'+(calMonth.getMonth()+1)).slice(-2); }
+function rv(){ var k = mkey(); if(!DB.reviews[k]) DB.reviews[k] = {}; return DB.reviews[k]; }
+function setRv(f,v){ rv()[f] = v; save(); }
+function moveMonth(n){ calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth()+n, 1); render(); }
+
+function viewRev(){
+  if(!revOpen){
+    return '<h1 class="sc">ふりかえり</h1>'
+      + '<div class="card"><div class="locked"><div class="ic">▥</div>'
+      + '<h2 style="margin:0 0 8px;font-size:19px">月に1回、いっしょに見る画面です</h2>'
+      + '<p class="note" style="margin-bottom:16px">毎日グラフを見ると、記録が自分への点数になってしまいます。'
+      + 'ふだんは閉じておいて、面談や通院の前、月のおわりなどに開いてください。</p>'
+      + '<button class="big" onclick="revOpen=true;render()">ひらく</button></div></div>';
+  }
+  var y = calMonth.getFullYear(), m = calMonth.getMonth(), c = tally(y,m);
+  var h = '<div class="mhead"><button onclick="moveMonth(-1)">‹</button>'
+        + '<b>'+y+'年'+(m+1)+'月</b><button onclick="moveMonth(1)">›</button></div>';
+
+  if(c.rec === 0){
+    return h + '<div class="card"><p class="nodata">この月は、まだ記録がありません。</p></div>'
+      + '<button class="sub" onclick="revOpen=false;render()">とじる</button>';
+  }
+
+  h += '<div class="card"><h2>'+(m+1)+'月の回数</h2>'
+     + '<div class="mcount">'
+     +   '<div style="--cc:var(--blue)"><b>'+c.go+'</b><span>行けた</span></div>'
+     +   '<div style="--cc:var(--amber)"><b>'+c.late+'</b><span>遅刻した</span></div>'
+     +   '<div style="--cc:var(--amber)"><b>'+c.half+'</b><span>途中で帰った</span></div>'
+     +   '<div style="--cc:var(--gray)"><b>'+c.no+'</b><span>行けなかった</span></div>'
+     + '</div>'
+     + '<div class="total"><b>'+(c.go+c.late+c.half)+'</b><span>回　事業所に行った日<br>（遅刻・早帰りを含む）</span></div>'
+     + '</div>';
+
+  var wrows = DB.why.map(function(it){ return {t:it.t, v:c.why[it.id]||0}; })
+                    .filter(function(r){ return r.v>0; }).sort(function(a,b){ return b.v-a.v; });
+  h += '<div class="card"><h2>行けなかった・遅れた理由<em>多い順</em></h2>'
+     + (wrows.length
+        ? '<p class="note">同じ理由がくり返しているときは、そこに手を打つ余地があります。</p>' + hbars(wrows,'var(--gray)')
+        : '<p class="nodata">この月は、理由の記録がありません。</p>')
+     + '</div>';
+
+  h += '<div class="card"><h2>体調<em>記録した日数</em></h2>'
+     + hbars([{t:'よい',v:c.good},{t:'ふつう',v:c.ok},{t:'わるい',v:c.bad}], 'var(--blue)', '日')
+     + '</div>';
+
+  var crows = DB.cope.map(function(it){ return {t:it.t, v:c.cope[it.id]||0}; })
+                     .filter(function(r){ return r.v>0; }).sort(function(a,b){ return b.v-a.v; });
+  h += '<div class="card"><h2>体調がわるいとき、やったこと<em>多い順</em></h2>'
+     + (crows.length
+        ? '<p class="note">そのあと楽になったものには、下の②に ◎ をつけておきましょう。</p>' + hbars(crows,'var(--green)')
+        : '<p class="nodata">この月は、記録がありません。</p>')
+     + '</div>';
+
+  h += '<div class="card"><h2>いた時間</h2>'
+     + '<p class="note">時間を入れた日だけで計算しています。</p>'
+     + '<div class="mcount">'
+     +   '<div style="--cc:var(--blue)"><b style="font-size:21px">'+hmText(c.mins)+'</b><span>合計</span></div>'
+     +   '<div style="--cc:var(--blue)"><b style="font-size:21px">'
+     +     (c.nmins ? hmText(Math.round(c.mins/c.nmins)) : '—')+'</b><span>1日の平均</span></div>'
+     + '</div></div>';
+
+  h += '<div class="card"><h2>毎日の体調</h2>'
+     + '<p class="note">棒が高いほど体調がわるい日です。棒をタップすると、その日の記録が出ます。</p>'
+     + chartCond(y,m)
+     + '<div class="tip" id="tipBox">棒をタップしてみてください。</div></div>';
+
+  h += '<div class="card"><h2>月ごとの変化<em>行けた回数・6か月</em></h2>' + trend() + '</div>';
+
+  h += '<div class="card"><h2>この月の記録<em>一覧</em></h2>' + dayTable(y,m) + '</div>';
+
+  var r = rv();
+  [['q1','① 行けなかった日・遅れた日に、共通していることは？','上の「理由」を見ながら書きましょう'],
+   ['q2','② やってみて、楽になったこと','効いたものに ◎ をつけておきましょう'],
+   ['q3','③ 来月やってみること（1つだけ）',''],
+   ['q4','④ いっしょに見た人から','']].forEach(function(q){
+    h += '<div class="card"><h2 style="font-size:16.5px">'+q[1]+'</h2>'
+       + (q[2] ? '<p class="note">'+q[2]+'</p>' : '')
+       + '<textarea oninput="setRv(\''+q[0]+'\',this.value)">'+esc(r[q[0]]||'')+'</textarea></div>';
+  });
+
+  h += '<button class="sub" onclick="revOpen=false;render()">とじる</button>';
+  return h;
+}
+
+/* ==================== 画面：せってい ==================== */
+function viewSet(){
+  var h = '<h1 class="sc">せってい</h1>';
+
+  h += '<div class="card"><h2>「行けなかった理由」の選択肢</h2>'
+     + '<p class="note">本人が言いやすい言葉に書きかえてください。</p>';
+  DB.why.forEach(function(it,i){
+    h += '<div class="itemrow"><input type="text" value="'+esc(it.t)+'" onchange="ren(\'why\','+i+',this.value)">'
+       + '<button onclick="del(\'why\','+i+')">けす</button></div>';
+  });
+  h += '<button class="dbtn" onclick="add(\'why\')">＋ ふやす</button></div>';
+
+  h += '<div class="card"><h2>「やったこと」の選択肢</h2>'
+     + '<p class="note">実際にやって楽になったことを足していくと、自分用の対処リストになります。</p>';
+  DB.cope.forEach(function(it,i){
+    h += '<div class="itemrow"><input type="text" value="'+esc(it.t)+'" onchange="ren(\'cope\','+i+',this.value)">'
+       + '<button onclick="del(\'cope\','+i+')">けす</button></div>';
+  });
+  h += '<button class="dbtn" onclick="add(\'cope\')">＋ ふやす</button></div>';
+
+  var n = Object.keys(DB.days).length;
+  h += '<div class="card"><h2>記録の保管場所</h2>'
+     + '<p class="note">記録は<b>このスマホの中だけ</b>に保存されています。どこにも送っていません。'
+     + 'いまの記録は <b>'+n+'日分</b> です。<br>'
+     + 'ブラウザの「データを消去」をすると記録も消えるので、ときどき書き出して保管してください。</p>'
+     + '<button class="dbtn" onclick="doExport()">記録を書き出す</button>'
+     + '<textarea class="io" id="ioBox" placeholder="ここに書き出されます／貼りつけて読みこみます"></textarea>'
+     + '<button class="dbtn" style="margin-top:10px" onclick="doImport()">貼りつけた記録を読みこむ</button>'
+     + '<button class="dbtn warn" onclick="doClear()">記録をぜんぶ消す</button></div>';
+  return h;
+}
+function add(f){ DB[f].push({id:f[0]+Date.now(), t:'あたらしい項目'}); save(); render(); }
+function ren(f,i,v){ v = String(v).trim(); if(!v) return; DB[f][i].t = v; save(); }
+function del(f,i){ DB[f].splice(i,1); save(); render(); }
+function doExport(){
+  var b = document.getElementById('ioBox');
+  b.value = JSON.stringify(DB); b.select();
+  if(navigator.clipboard){ navigator.clipboard.writeText(b.value).catch(function(){}); }
+  flash();
+}
+function doImport(){
+  var b = document.getElementById('ioBox');
+  try{
+    var o = JSON.parse(b.value); if(!o || typeof o !== 'object') throw 0;
+    DB = {v:1, why:o.why||DB.why, cope:o.cope||DB.cope, days:o.days||{}, reviews:o.reviews||{}};
+    save(); render();
+  }catch(e){ b.value = '読みこめませんでした。書き出した文字をそのまま貼ってください。'; }
+}
+function doClear(){
+  var b = document.getElementById('ioBox');
+  if(b.value !== 'けす'){
+    b.value = '';
+    b.placeholder = '本当に消す場合は、この欄に「けす」と入力してから、もう一度ボタンを押してください。';
+    b.focus(); return;
+  }
+  DB = {v:1, why:mk(DEF_WHY,'w'), cope:mk(DEF_COPE,'c'), days:{}, reviews:{}};
+  save(); render();
+}
+
+/* ==================== 切りかえ ==================== */
+var screen = 'home';
+function go(s){ screen = s; render(); window.scrollTo(0,0); }
+function render(){
+  var html = screen==='home' ? viewHome()
+           : screen==='rec'  ? viewRec()
+           : screen==='rev'  ? viewRev()
+           :                   viewSet();
+  document.getElementById('app').innerHTML = html;
+  var map = {home:'navHome', rec:'navHome', rev:'navRev', set:'navSet'};
+  ['navHome','navRev','navSet'].forEach(function(id){
+    document.getElementById(id).className = (map[screen]===id) ? 'on' : '';
+  });
+}
+render();
+</script>
+</body>
+</html>
